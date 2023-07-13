@@ -2,33 +2,34 @@
 
 directory 구조
 local:
-   ./infer/infer.py
-   ./train/train.py
-   ./lib/digit_recognizer.py
-   ./data
-   ./model
-   ./Dockerfile.train
-   ./Dockerfile.test
+* ./infer/infer.py
+* ./train/train.py
+* ./lib/digit_recognizer.py
+* ./data
+* ./model
+* ./Dockerfile.train
+* ./Dockerfile.test
 
 build
-   docker build -f ./Dockerfile.train -t trainxxx:x.x .
-   docker build -f ./Dockerfile.infer -t inferxxx:x.x .
+* docker build -f ./Dockerfile.train -t trainxxx:x.x .
+* docker build -f ./Dockerfile.infer -t inferxxx:x.x .
 
 docker run
-   docker run -v ./data:/data -v ./model:/model trainxxx:x.x .
-   docker run -v (-d) ./model:/model -p 80:80 inferxxx:x.x .
+* docker run -v ./data:/data -v ./model:/model trainxxx:x.x .
+* docker run -v (-d) ./model:/model -p 80:80 inferxxx:x.x .
 
 이 상황에서의 컨테이너 폴더
-inferxxx
-   /app/infer.py
-   /module/digit_recognizer.py
-   /model                     (볼륨 공유 상황이며, 학습이 진행된 이후라면 modelfile이 들어 있음)
+: inferxxx
+* /app/infer.py
+* /module/digit_recognizer.py
+* /model
+(볼륨 공유 상황이며, 학습이 진행된 이후라면 modelfile이 들어 있음)
 
-trainxxx
-   /app/train.py
-   /module/digit_recognizer.py
-   /model                     (볼륨 공유 상황)
-   /data/*                     (볼륨 공유 상황)
+: trainxxx
+* /app/train.py
+* /module/digit_recognizer.py
+* /model                     (볼륨 공유 상황)
+* /data/*                     (볼륨 공유 상황)
 
 
 1. 수업 자료는 https://drive.google.com/drive/folders/1ndFuBjEvkukuR4xM6PlZp1bkmuLaWYx3?usp=sharing 링크를 참조하세요
