@@ -1,0 +1,11 @@
+FROM bitnami/pytorch:latest
+LABEL maintainer "edberg1974 <edberg.s@gmail.com>"
+
+COPY ./lib/ /module
+WORKDIR /app
+COPY train/train.py .
+ENV LIBPATH='/module'
+ENV MODELPATH='/model/'
+ENV DATAPAHT='/data/'
+ENTRYPOINT ["python3"]
+CMD ["train.py"]

@@ -1,0 +1,13 @@
+FROM bitnami/pytorch:latest
+LABEL maintainer "edberg1974 <edberg.s@gmail.com>"
+
+COPY ./lib/ /module
+ENV LIBPATH='/module'
+ENV MODELPATH='/model/'
+
+WORKDIR /app
+COPY infer/infer.py .
+RUN pip3 install flask
+
+ENTRYPOINT ["python3"]
+CMD ["infer.py"]
