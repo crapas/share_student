@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# pre-commit 훅 스크립트
+
+# 변경된 파일 목록 가져오기
+files=$(git diff --cached --name-only --diff-filter=ACM)
+
+# 테스트 코드 파일 필터링
+#test_files=$(git ls-files --cached --exclude-standard -- '*.py' | grep "_test.py$")
+
+# 테스트 실행
+
+echo "Running Train Unit Test..."
+cd train
+python3 -m unittest train_test.py
+
+if [ $? -ne 0 ]; then
+    echo "Unit tests failed. Commit aborted."
+    exit 1
+fi
+
+echo "Running Infer Unit Test..."
+cd ../infer
+python3 infer_test.py
+#python3 -m unittest infer_test.py
+
+if [ $? -ne 0 ]; then
+    echo "Unit tests failed. Commit aborted."
+    exit 1
+fi
+
+# 변경된 파일이 없으면 커밋 중단
+#if [ -z "$files" ]; then
+#    echo "No Python files to commit."
+#    exit 0
+#fi
+
+# 변경된 파일이 있으면 커밋 허용
+exit 0
