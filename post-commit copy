@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# 이전 이미지 버전 조회
+train_previous_version=$(docker images trainimage --format "{{.Tag}}" | sort -n | tail -n 1)
+infer_previous_version=$(docker images inferimage --format "{{.Tag}}" | sort -n | tail -n 1)
+# 새로운 태그 번호 계산
+if [ -z "$train_previous_version" ]; then
+    train_new_version=0
+else
+    train_new_version=$((train_previous_version + 1))
+fi
+
+if [ -z "$infer_previous_version" ]; then
+    infer_new_version=0
+else
+    infer_new_version=$((infer_previous_version + 1))
+fi
+
+
+# 도커 이미지 빌드
+docker build -f Dockerfile.train -t trainimage:$train_new_version .
+docker build -f Dockerfile.infer -t inferimage:$infer_new_version .
+
+#!/bin/sh
+
+# post-commit 훅 스크립트
+
+# 서비스가 존재하는지 확인
+if docker service ls --format '{{.Name}}' | grep -q inferservice; then
+    # 도커 스웜 서비스 업데이트
+    docker service update --image inferimage:$infer_new_version --update-parallelism 1 --update-delay 10s inferservice
+else
+    # 도커 스웜 서비스 생성
+    docker service create -t --mount type=bind,source=./model,target=/model -p 5001:5001 --replicas=3 --name inferservice inferimage:$infer_new_version
+fi
