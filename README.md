@@ -32,9 +32,13 @@ docker run
 * /data/*                     (볼륨 공유 상황)
 
 
-1. 수업 자료는 https://drive.google.com/drive/folders/1ndFuBjEvkukuR4xM6PlZp1bkmuLaWYx3?usp=sharing 링크를 참조하세요
+1. 수업 자료는 링크를 참조하세요
+: 7/12 삭제
+: 7/13 - https://drive.google.com/drive/folders/1ndFuBjEvkukuR4xM6PlZp1bkmuLaWYx3?usp=sharing
+: 7/14 - https://drive.google.com/drive/folders/1zgpSaKaLer36tkECElNh1N5KivIG_8fV?usp=sharing
+
 2. 가상 환경에 대해서
-3. 
+
 
    Python으로 작업을 하다 보면 모듈이 스파게티 상태가 되는 경우가 많습니다.
    특히 버전 충돌도 잦은 편 입니다.
